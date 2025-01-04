@@ -1,37 +1,38 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
-public class SociteArrayList implements IGestion {
+public class SociteArrayList implements IGestion<Employe>{
 
-    List<Employe> employeList = new ArrayList<>();
+ private  List<Employe> employeList ;
+public SociteArrayList(){
+    this.employeList = new ArrayList<>();
+}
+
     @Override
-    public void ajouterEmploye(Object o) {
-employeList.add((Employe) o);
+    public void ajouterEmploye(Employe o) {
+employeList.add(o);
     }
 
     @Override
     public boolean rechercherEmploye(String nom) {
-        if (employeList.isEmpty()) {
-            return false;
-        }
-        else return employeList.get(0).getNom().equals(nom);
+      for(int i =0 ;i<this.employeList.size();i++){
+          if(this.employeList.get(i).getNom().equals(nom)){
+              return true;
+          }
+      }
+      return false;
     }
 
     @Override
-    public boolean rechercherEmploye(Object o) {
-        if (employeList.isEmpty()) {
-            return false;
-        }
-        else return employeList.get(0).equals(o);
-
+    public boolean rechercherEmploye(Employe o) {
+       return this.employeList.contains(o);
     }
 
     @Override
-    public void supprimerEmploye(Object o) {
-        employeList.remove(o);
-
+    public void supprimerEmploye(Employe employe) {
+        employeList.remove(employe);
     }
+
+
 
     @Override
     public void displayEmploye() {
@@ -48,7 +49,8 @@ employeList.add((Employe) o);
 
     @Override
     public void trierEmployeParNomDépartementEtGrade() {
-Collections.sort(employeList,
-        new EmployeComp());
+Collections.sort(employeList ,
+        new ComparatorParDep()
+                .thenComparing(new ComparatorParGrade()));
     }
 }
